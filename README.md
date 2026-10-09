@@ -104,6 +104,13 @@ prompt-jump runs entirely on your machine. **It sends nothing over the network a
 
 **What it reads**
 
+Only what the list needs, only from the current session, only when you open `/jump`:
+
+- It keeps nothing but your own typed prompts (their id and text). Claude's replies, tool output and notifications are skipped.
+- It does not read other sessions, Claude's memory or conversation summaries, and it keeps nothing after the session ends.
+
+In detail:
+
 - The current conversation, through `$.session.messages()`, to decide which prompts exist and in what order.
 - The text and id of your prompt rows as Claude Code draws them on screen.
 - Your own session's transcript file, `<config folder>/projects/<project>/<session-id>.jsonl`, to find prompts that have not been drawn yet after `--resume`. The config folder is `$CLAUDE_CONFIG_DIR`, or `~/.claude` when that is unset.
