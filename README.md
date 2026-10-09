@@ -6,14 +6,9 @@
 
 Long Claude Code sessions bury your own prompts under pages of tool output. `Ctrl+R` brings back the *text* of an old prompt, but not the *place* in the conversation where you wrote it. `prompt-jump` adds a `/jump` panel that lists every prompt of the current conversation, newest first. Pick one and the transcript scrolls straight to it.
 
-```
-┌ 프롬프트로 이동 ───────────────────────────────────────────┐
-│ > bypass                                                   │
-│ 2/14개 · Enter: 이동 · Tab/↑↓: 선택 · Esc: 닫기              │
-│ ▸ #12  defaultMode bypassPermissions 로 바꿔줘              │
-│    #3  bypass 모드의 trade-off 알려줘                        │
-└────────────────────────────────────────────────────────────┘
-```
+![/jump lists the prompts of a resumed session, filters them by word and by number, and scrolls the transcript to the one you pick](docs/demo.gif)
+
+<sub>The demo resumes a session and jumps to prompt #1 without scrolling to it first.</sub>
 
 ## Features
 
@@ -122,7 +117,8 @@ prompt-jump/
 ├── hooks/register.tsx           # the mod
 ├── types/index.d.ts             # $.state contract
 ├── tests/prompt-jump.test.tsx   # claude plugin test
-└── docs/DEVELOPMENT.md          # how this mod was built, iteration by iteration
+├── docs/DEVELOPMENT.md          # how this mod was built, iteration by iteration
+└── docs/demo/                   # re-records docs/demo.gif (record.sh, demo.tape)
 ```
 
 ```bash
@@ -131,6 +127,8 @@ claude plugin test .       # 15 tests: ordering, rewind, resume, filters, CJK wi
 ```
 
 While developing, run it from the folder with `claude --plugin-dir .`. Saving a file reloads the mod.
+
+To re-record the demo GIF after a UI change, run `docs/demo/record.sh` (needs `vhs` and `gifsicle`; it generates a short demo conversation with Haiku, so it uses a little of your plan).
 
 The story of how the mod got here, including every bug and the reason behind each fix, is in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) (Korean).
 

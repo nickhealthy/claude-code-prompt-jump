@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Demo GIF in the README, and `docs/demo/record.sh` to re-record it.
+
 ## [0.1.0] - 2026-10-09
 
 First public release.

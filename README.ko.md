@@ -6,14 +6,9 @@
 
 긴 Claude Code 세션에서는 내 프롬프트가 도구 출력 수십 페이지 아래에 묻힙니다. `Ctrl+R`은 예전 프롬프트의 *텍스트*는 불러오지만, 대화 속 그 *위치*로 데려가지는 않습니다. `prompt-jump`는 `/jump` 패널을 추가합니다. 현재 대화의 프롬프트가 최신순으로 나오고, 하나를 고르면 대화가 그 위치로 바로 스크롤됩니다.
 
-```
-┌ 프롬프트로 이동 ───────────────────────────────────────────┐
-│ > bypass                                                   │
-│ 2/14개 · Enter: 이동 · Tab/↑↓: 선택 · Esc: 닫기              │
-│ ▸ #12  defaultMode bypassPermissions 로 바꿔줘              │
-│    #3  bypass 모드의 trade-off 알려줘                        │
-└────────────────────────────────────────────────────────────┘
-```
+![/jump가 resume한 세션의 프롬프트를 나열하고, 단어와 번호로 거른 뒤, 고른 프롬프트로 대화를 스크롤하는 모습](docs/demo.gif)
+
+<sub>데모는 세션을 resume한 뒤, 스크롤해 본 적 없는 #1 프롬프트로 바로 이동합니다.</sub>
 
 ## 기능
 
@@ -121,7 +116,8 @@ prompt-jump/
 ├── hooks/register.tsx           # mod 본체
 ├── types/index.d.ts             # $.state 계약
 ├── tests/prompt-jump.test.tsx   # claude plugin test
-└── docs/DEVELOPMENT.md          # 개발 과정 기록
+├── docs/DEVELOPMENT.md          # 개발 과정 기록
+└── docs/demo/                   # docs/demo.gif 재녹화 (record.sh, demo.tape)
 ```
 
 ```bash
@@ -130,6 +126,8 @@ claude plugin test .       # 테스트 15개: 정렬, 되감기, resume, 필터,
 ```
 
 개발 중에는 `claude --plugin-dir .`로 폴더에서 바로 실행하세요. 파일을 저장하면 mod가 다시 로드됩니다.
+
+UI를 바꾼 뒤 데모 GIF를 다시 만들려면 `docs/demo/record.sh`를 실행하세요(`vhs`, `gifsicle` 필요. Haiku로 짧은 데모 대화를 실제로 만들기 때문에 사용량이 조금 듭니다).
 
 버그가 어떻게 발견되고 왜 그렇게 고쳤는지까지 담은 개발 과정은 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)에 있습니다.
 
