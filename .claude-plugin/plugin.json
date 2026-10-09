@@ -9,6 +9,9 @@
   },
   "homepage": "https://github.com/nickhealthy/claude-code-prompt-jump",
   "repository": "https://github.com/nickhealthy/claude-code-prompt-jump",
+  "documentationUrl": "https://github.com/nickhealthy/claude-code-prompt-jump#readme",
+  "supportUrl": "https://github.com/nickhealthy/claude-code-prompt-jump/issues",
+  "privacyPolicyUrl": "https://github.com/nickhealthy/claude-code-prompt-jump#privacy-and-security",
   "license": "MIT",
   "keywords": ["claude-code", "mod", "navigation", "prompt", "history", "transcript"],
   "types": "./types/index.d.ts"
