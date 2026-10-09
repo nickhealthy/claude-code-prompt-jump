@@ -6,7 +6,9 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Added
 
-- Demo GIF in the README, and `docs/demo/record.sh` to re-record it.
+- Demo GIF in the README.
+- Listing icon for the plugin directory.
+- "Privacy and security" section in the README: what the mod reads, the exact local commands it runs, and that it sends nothing.
 
 ## [0.1.0] - 2026-10-09
 

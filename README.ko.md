@@ -98,6 +98,30 @@ git clone https://github.com/nickhealthy/claude-code-prompt-jump.git ~/.claude/m
 
 목록은 `/jump`를 열 때 한 번만 계산하므로, 검색어를 입력할 때마다 대화 전체를 다시 읽지 않습니다.
 
+## 개인정보와 보안
+
+prompt-jump는 전부 내 컴퓨터 안에서 동작합니다. **네트워크로 아무것도 보내지 않고, Claude Code 자체 세션 상태 밖에는 아무것도 쓰지 않습니다.**
+
+**읽는 것**
+
+- 현재 대화(`$.session.messages()`): 어떤 프롬프트가 있고 순서가 어떤지 정하기 위해
+- 화면에 그려진 프롬프트 행의 텍스트와 id
+- 내 세션의 기록 파일 `<설정 폴더>/projects/<프로젝트>/<세션 id>.jsonl`: `--resume` 직후 아직 그려지지 않은 프롬프트를 찾기 위해. 설정 폴더는 `$CLAUDE_CONFIG_DIR`, 없으면 `~/.claude`입니다
+- 환경 변수 `HOME`, `CLAUDE_CONFIG_DIR`: 위 기록 파일 위치를 찾는 데만 씁니다
+
+**실행하는 것**
+
+`/jump`를 열 때만, 읽기 전용 로컬 프로그램을 최대 두 개 실행합니다. 셸을 거치지 않고 인자 목록으로 직접 실행합니다.
+
+| 프로그램 | 실행하는 명령 그대로 | 이유 |
+| --- | --- | --- |
+| `grep` | `grep -F '"promptSource":' <기록 파일>` | 프롬프트 행만 읽어 옵니다. 기록 파일은 mod가 `$.fs.read`로 읽을 수 있는 4 MiB보다 클 수 있습니다 |
+| `find` | `find <설정 폴더>/projects -maxdepth 2 -name <세션 id>.jsonl` | 기록 파일이 예상 경로에 없을 때만 실행합니다. 프로젝트 폴더 이름이 200자를 넘어 Claude Code가 줄여 쓴 경우입니다 |
+
+**보내는 것**
+
+없습니다. 위 프로그램의 출력은 mod 안에서 해석해 패널에 보여 줄 뿐, 파일로 쓰지도, 서버로 보내지도, 대화 기록이나 모델 컨텍스트에 넣지도 않습니다.
+
 ## 알려진 한계
 
 - `/compact` 이후에는 압축 전 프롬프트가 목록에서 빠집니다. 스크롤로는 여전히 볼 수 있습니다.
@@ -116,8 +140,7 @@ prompt-jump/
 ├── hooks/register.tsx           # mod 본체
 ├── types/index.d.ts             # $.state 계약
 ├── tests/prompt-jump.test.tsx   # claude plugin test
-├── docs/DEVELOPMENT.md          # 개발 과정 기록
-└── docs/demo/                   # docs/demo.gif 재녹화 (record.sh, demo.tape)
+└── docs/DEVELOPMENT.md          # 개발 과정 기록
 ```
 
 ```bash
@@ -126,8 +149,6 @@ claude plugin test .       # 테스트 15개: 정렬, 되감기, resume, 필터,
 ```
 
 개발 중에는 `claude --plugin-dir .`로 폴더에서 바로 실행하세요. 파일을 저장하면 mod가 다시 로드됩니다.
-
-UI를 바꾼 뒤 데모 GIF를 다시 만들려면 `docs/demo/record.sh`를 실행하세요(`vhs`, `gifsicle` 필요. Haiku로 짧은 데모 대화를 실제로 만들기 때문에 사용량이 조금 듭니다).
 
 버그가 어떻게 발견되고 왜 그렇게 고쳤는지까지 담은 개발 과정은 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)에 있습니다.
 

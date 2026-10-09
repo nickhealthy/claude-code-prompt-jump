@@ -98,6 +98,30 @@ Inside the panel:
 
 The list is computed once when `/jump` opens, so typing in the search box never re-reads the conversation.
 
+## Privacy and security
+
+prompt-jump runs entirely on your machine. **It sends nothing over the network and writes nothing outside Claude Code's own session state.**
+
+**What it reads**
+
+- The current conversation, through `$.session.messages()`, to decide which prompts exist and in what order.
+- The text and id of your prompt rows as Claude Code draws them on screen.
+- Your own session's transcript file, `<config folder>/projects/<project>/<session-id>.jsonl`, to find prompts that have not been drawn yet after `--resume`. The config folder is `$CLAUDE_CONFIG_DIR`, or `~/.claude` when that is unset.
+- Two environment variables, `HOME` and `CLAUDE_CONFIG_DIR`, only to locate that transcript file.
+
+**What it runs**
+
+It starts at most two local, read-only programs, only when you open `/jump`. Each is started directly with an argument list, never through a shell.
+
+| Program | Exact command | Why |
+| --- | --- | --- |
+| `grep` | `grep -F '"promptSource":' <transcript file>` | Copies in only your prompt rows. The transcript can be larger than the 4 MiB a mod may read with `$.fs.read`. |
+| `find` | `find <config folder>/projects -maxdepth 2 -name <session-id>.jsonl` | Runs only when the transcript is not at the expected path, which happens when the project folder name is longer than 200 characters and Claude Code shortens it. |
+
+**What it sends**
+
+Nothing. The output of these programs is parsed inside the mod and shown in the panel. It is not written to disk, not sent to any server, and not added to the transcript or to the model's context.
+
 ## Known limitations
 
 - After `/compact`, prompts from before the compaction drop out of the list. They are still in the scrollback.
@@ -117,8 +141,7 @@ prompt-jump/
 ├── hooks/register.tsx           # the mod
 ├── types/index.d.ts             # $.state contract
 ├── tests/prompt-jump.test.tsx   # claude plugin test
-├── docs/DEVELOPMENT.md          # how this mod was built, iteration by iteration
-└── docs/demo/                   # re-records docs/demo.gif (record.sh, demo.tape)
+└── docs/DEVELOPMENT.md          # how this mod was built, iteration by iteration
 ```
 
 ```bash
@@ -127,8 +150,6 @@ claude plugin test .       # 15 tests: ordering, rewind, resume, filters, CJK wi
 ```
 
 While developing, run it from the folder with `claude --plugin-dir .`. Saving a file reloads the mod.
-
-To re-record the demo GIF after a UI change, run `docs/demo/record.sh` (needs `vhs` and `gifsicle`; it generates a short demo conversation with Haiku, so it uses a little of your plan).
 
 The story of how the mod got here, including every bug and the reason behind each fix, is in [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) (Korean).
 
