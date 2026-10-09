@@ -1,0 +1,15 @@
+{
+  "name": "prompt-jump",
+  "description": "Prompt Jump: a Claude Code mod that jumps back to any prompt you typed in a session.",
+  "owner": {
+    "name": "nickhealthy",
+    "url": "https://github.com/nickhealthy"
+  },
+  "plugins": [
+    {
+      "name": "prompt-jump",
+      "source": "./",
+      "description": "Jump back to any prompt you typed in a Claude Code session with /jump."
+    }
+  ]
+}
